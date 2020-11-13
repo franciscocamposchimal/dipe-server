@@ -81,6 +81,8 @@ export class AppController {
   @Put('/api/cards/:id')
   async updateCard(@Param('id') id: string, @Body() data: any) {
     console.log('CARD UPDATE: ', id);
+    console.log('CARD DATA: ', data);
+    
     const [findCard] = await this.prisma.card.findMany({
       where: { cardId: id }
     }); 
