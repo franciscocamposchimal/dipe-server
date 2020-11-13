@@ -30,6 +30,7 @@ export class AppController {
 
   @Get('/api/cards/:id')
   async getOneCard(@Param('id') id: string): Promise<CardModel> {
+    console.log('CARD GET_ONE: ', id);
     return await this.prisma.card.findOne({ where: { id } });
   }
 
@@ -64,6 +65,7 @@ export class AppController {
 
   @Put('/api/cards/:id')
   async updateCard(@Param('id') id: string, @Body() data: any) {
+    console.log('CARD UPDATE: ', id);
     const [findCard] = await this.prisma.card.findMany({
       where: { cardId: id }
     }); 
