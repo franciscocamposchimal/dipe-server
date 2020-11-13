@@ -35,6 +35,8 @@ export class AppController {
     const [findCard] = await this.prisma.card.findMany({
       where: { cardId: id }
     }); 
+
+    console.log('CARD FIND: ', findCard);
     
     if(!findCard) throw new HttpException('Not found', HttpStatus.NOT_FOUND);
 
