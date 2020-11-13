@@ -31,7 +31,14 @@ export class AppController {
   @Get('/api/cards/:id')
   async getOneCard(@Param('id') id: string): Promise<CardModel> {
     console.log('CARD GET_ONE: ', id);
-    return await this.prisma.card.findOne({ where: { id } });
+
+    const [findCard] = await this.prisma.card.findMany({
+      where: { cardId: id }
+    }); 
+    
+    if(!findCard) throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+
+    return findCard;
   }
 
   @Post('/api/cards')
