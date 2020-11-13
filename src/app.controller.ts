@@ -34,17 +34,17 @@ export class AppController {
 
     const [findCard] = await this.prisma.card.findMany({
       where: { cardId: id }
-    }); 
+    });
 
     console.log('CARD FIND: ', findCard);
-    
-    if(!findCard) throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+
+    if (!findCard) throw new HttpException('Not found', HttpStatus.NOT_FOUND);
 
     return {
-      id: findCard.id, 
-      number: findCard.cardId, 
-      pack: findCard.pack, 
-      disp: findCard.available, 
+      id: findCard.id,
+      number: findCard.cardId,
+      pack: findCard.pack,
+      disp: findCard.available,
       created_at: findCard.createdAt
     };
   }
@@ -82,22 +82,30 @@ export class AppController {
   async updateCard(@Param('id') id: string, @Body() data: any) {
     console.log('CARD UPDATE: ', id);
     console.log('CARD DATA: ', data);
-    
+
     const [findCard] = await this.prisma.card.findMany({
       where: { cardId: id }
-    }); 
-    
-    if(!findCard) throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    });
 
-    if(findCard.available == 0 ) throw new HttpException('No Content', HttpStatus.NO_CONTENT); 
+    if (!findCard) throw new HttpException('Not found', HttpStatus.NOT_FOUND);
 
-    if(findCard.available > 0 && findCard.available >= data.disp_up) {
-      return await this.prisma.card.update({
+    if (findCard.available == 0) throw new HttpException('No Content', HttpStatus.NO_CONTENT);
+
+    if (findCard.available > 0 && findCard.available >= data.disp_up) {
+      const cardUpdated = await this.prisma.card.update({
         where: { id: findCard.id },
         data: {
           available: findCard.available - data.disp_up
         }
       });
+
+      return {
+        id: cardUpdated.id,
+        number: cardUpdated.cardId,
+        pack: cardUpdated.pack,
+        disp: cardUpdated.available,
+        created_at: cardUpdated.createdAt
+      };
     }
   }
 
