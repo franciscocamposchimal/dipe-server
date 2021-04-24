@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("DATABASE_URL_DEV")
+}
+
+model Card {
+  id        String    @id @default(uuid())
+  cardId    String    @unique
+  pack      Int       @default(0)
+  available Int       @default(0)
+  logs       Stream[]
+  ownerId   String?
+  owner     Owner?    @relation(fields: [ownerId], references: [id])
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model Refill {
+  id        String    @id @default(uuid())
+  quantity  Int       @default(0)
+  equalsTo  Int       @default(0)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model Owner {
+  id        String    @id @default(uuid())
+  name      String?
+  phone     String?
+  cards     Card[]
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model Stream {
+  id           String    @id @default(uuid())
+  amount       Int?      @default(0)
+  amountBefore Int?      @default(0)
+  amountAfter  Int?      @default(0)
+  cardId       String?
+  card         Card?     @relation(fields: [cardId], references: [id])
+  createdAt    DateTime? @default(now())
+  updatedAt    DateTime? @updatedAt
+}

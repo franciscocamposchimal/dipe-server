@@ -1,0 +1,12 @@
+-- AlterTable
+ALTER TABLE "Card" ALTER COLUMN "pack" SET DEFAULT 0,
+ALTER COLUMN "available" SET DEFAULT 0;
+
+-- AlterTable
+ALTER TABLE "Refill" ALTER COLUMN "quantity" SET DEFAULT 0,
+ALTER COLUMN "equalsTo" SET DEFAULT 0;
+
+-- AlterTable
+ALTER TABLE "Stream" ADD COLUMN     "amount" INTEGER DEFAULT 0,
+ADD COLUMN     "amountBefore" INTEGER DEFAULT 0,
+ADD COLUMN     "amountAfter" INTEGER DEFAULT 0;
