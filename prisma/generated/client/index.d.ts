@@ -56,6 +56,7 @@ export type Owner = {
 
 export type Stream = {
   id: string
+  type: TypeStream
   amount: number | null
   amountBefore: number | null
   amountAfter: number | null
@@ -63,6 +64,21 @@ export type Stream = {
   createdAt: Date | null
   updatedAt: Date | null
 }
+
+
+/**
+ * Enums
+ */
+
+// Based on
+// https://github.com/microsoft/TypeScript/issues/3192#issuecomment-261720275
+
+export const TypeStream: {
+  DISCOUNT: 'DISCOUNT',
+  ADD: 'ADD'
+};
+
+export type TypeStream = (typeof TypeStream)[keyof typeof TypeStream]
 
 
 /**
@@ -3220,6 +3236,7 @@ export namespace Prisma {
 
   export type StreamMinAggregateOutputType = {
     id: string | null
+    type: TypeStream | null
     amount: number | null
     amountBefore: number | null
     amountAfter: number | null
@@ -3230,6 +3247,7 @@ export namespace Prisma {
 
   export type StreamMaxAggregateOutputType = {
     id: string | null
+    type: TypeStream | null
     amount: number | null
     amountBefore: number | null
     amountAfter: number | null
@@ -3240,6 +3258,7 @@ export namespace Prisma {
 
   export type StreamCountAggregateOutputType = {
     id: number
+    type: number
     amount: number
     amountBefore: number
     amountAfter: number
@@ -3264,6 +3283,7 @@ export namespace Prisma {
 
   export type StreamMinAggregateInputType = {
     id?: true
+    type?: true
     amount?: true
     amountBefore?: true
     amountAfter?: true
@@ -3274,6 +3294,7 @@ export namespace Prisma {
 
   export type StreamMaxAggregateInputType = {
     id?: true
+    type?: true
     amount?: true
     amountBefore?: true
     amountAfter?: true
@@ -3284,6 +3305,7 @@ export namespace Prisma {
 
   export type StreamCountAggregateInputType = {
     id?: true
+    type?: true
     amount?: true
     amountBefore?: true
     amountAfter?: true
@@ -3382,6 +3404,7 @@ export namespace Prisma {
 
   export type StreamGroupByOutputType = {
     id: string
+    type: TypeStream
     amount: number | null
     amountBefore: number | null
     amountAfter: number | null
@@ -3404,6 +3427,7 @@ export namespace Prisma {
 
   export type StreamSelect = {
     id?: boolean
+    type?: boolean
     amount?: boolean
     amountBefore?: boolean
     amountAfter?: boolean
@@ -4097,6 +4121,7 @@ export namespace Prisma {
 
   export const StreamScalarFieldEnum: {
     id: 'id',
+    type: 'type',
     amount: 'amount',
     amountBefore: 'amountBefore',
     amountAfter: 'amountAfter',
@@ -4246,6 +4271,7 @@ export namespace Prisma {
     OR?: Enumerable<StreamWhereInput>
     NOT?: Enumerable<StreamWhereInput>
     id?: StringFilter | string
+    type?: EnumTypeStreamFilter | TypeStream
     amount?: IntNullableFilter | number | null
     amountBefore?: IntNullableFilter | number | null
     amountAfter?: IntNullableFilter | number | null
@@ -4257,6 +4283,7 @@ export namespace Prisma {
 
   export type StreamOrderByInput = {
     id?: SortOrder
+    type?: SortOrder
     amount?: SortOrder
     amountBefore?: SortOrder
     amountAfter?: SortOrder
@@ -4274,6 +4301,7 @@ export namespace Prisma {
     OR?: Enumerable<StreamScalarWhereWithAggregatesInput>
     NOT?: Enumerable<StreamScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
+    type?: EnumTypeStreamWithAggregatesFilter | TypeStream
     amount?: IntNullableWithAggregatesFilter | number | null
     amountBefore?: IntNullableWithAggregatesFilter | number | null
     amountAfter?: IntNullableWithAggregatesFilter | number | null
@@ -4473,6 +4501,7 @@ export namespace Prisma {
 
   export type StreamCreateInput = {
     id?: string
+    type: TypeStream
     amount?: number | null
     amountBefore?: number | null
     amountAfter?: number | null
@@ -4483,6 +4512,7 @@ export namespace Prisma {
 
   export type StreamUncheckedCreateInput = {
     id?: string
+    type: TypeStream
     amount?: number | null
     amountBefore?: number | null
     amountAfter?: number | null
@@ -4493,6 +4523,7 @@ export namespace Prisma {
 
   export type StreamUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    type?: EnumTypeStreamFieldUpdateOperationsInput | TypeStream
     amount?: NullableIntFieldUpdateOperationsInput | number | null
     amountBefore?: NullableIntFieldUpdateOperationsInput | number | null
     amountAfter?: NullableIntFieldUpdateOperationsInput | number | null
@@ -4503,6 +4534,7 @@ export namespace Prisma {
 
   export type StreamUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    type?: EnumTypeStreamFieldUpdateOperationsInput | TypeStream
     amount?: NullableIntFieldUpdateOperationsInput | number | null
     amountBefore?: NullableIntFieldUpdateOperationsInput | number | null
     amountAfter?: NullableIntFieldUpdateOperationsInput | number | null
@@ -4513,6 +4545,7 @@ export namespace Prisma {
 
   export type StreamCreateManyInput = {
     id?: string
+    type: TypeStream
     amount?: number | null
     amountBefore?: number | null
     amountAfter?: number | null
@@ -4523,6 +4556,7 @@ export namespace Prisma {
 
   export type StreamUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    type?: EnumTypeStreamFieldUpdateOperationsInput | TypeStream
     amount?: NullableIntFieldUpdateOperationsInput | number | null
     amountBefore?: NullableIntFieldUpdateOperationsInput | number | null
     amountAfter?: NullableIntFieldUpdateOperationsInput | number | null
@@ -4532,6 +4566,7 @@ export namespace Prisma {
 
   export type StreamUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    type?: EnumTypeStreamFieldUpdateOperationsInput | TypeStream
     amount?: NullableIntFieldUpdateOperationsInput | number | null
     amountBefore?: NullableIntFieldUpdateOperationsInput | number | null
     amountAfter?: NullableIntFieldUpdateOperationsInput | number | null
@@ -4675,6 +4710,13 @@ export namespace Prisma {
     none?: CardWhereInput
   }
 
+  export type EnumTypeStreamFilter = {
+    equals?: TypeStream
+    in?: Enumerable<TypeStream>
+    notIn?: Enumerable<TypeStream>
+    not?: NestedEnumTypeStreamFilter | TypeStream
+  }
+
   export type IntNullableFilter = {
     equals?: number | null
     in?: Enumerable<number> | null
@@ -4689,6 +4731,16 @@ export namespace Prisma {
   export type CardRelationFilter = {
     is?: CardWhereInput | null
     isNot?: CardWhereInput | null
+  }
+
+  export type EnumTypeStreamWithAggregatesFilter = {
+    equals?: TypeStream
+    in?: Enumerable<TypeStream>
+    notIn?: Enumerable<TypeStream>
+    not?: NestedEnumTypeStreamWithAggregatesFilter | TypeStream
+    count?: NestedIntFilter
+    min?: NestedEnumTypeStreamFilter
+    max?: NestedEnumTypeStreamFilter
   }
 
   export type IntNullableWithAggregatesFilter = {
@@ -4831,6 +4883,10 @@ export namespace Prisma {
     create?: XOR<CardCreateWithoutLogsInput, CardUncheckedCreateWithoutLogsInput>
     connectOrCreate?: CardCreateOrConnectWithoutLogsInput
     connect?: CardWhereUniqueInput
+  }
+
+  export type EnumTypeStreamFieldUpdateOperationsInput = {
+    set?: TypeStream
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
@@ -4987,6 +5043,23 @@ export namespace Prisma {
     max?: NestedDateTimeNullableFilter
   }
 
+  export type NestedEnumTypeStreamFilter = {
+    equals?: TypeStream
+    in?: Enumerable<TypeStream>
+    notIn?: Enumerable<TypeStream>
+    not?: NestedEnumTypeStreamFilter | TypeStream
+  }
+
+  export type NestedEnumTypeStreamWithAggregatesFilter = {
+    equals?: TypeStream
+    in?: Enumerable<TypeStream>
+    notIn?: Enumerable<TypeStream>
+    not?: NestedEnumTypeStreamWithAggregatesFilter | TypeStream
+    count?: NestedIntFilter
+    min?: NestedEnumTypeStreamFilter
+    max?: NestedEnumTypeStreamFilter
+  }
+
   export type NestedIntNullableWithAggregatesFilter = {
     equals?: number | null
     in?: Enumerable<number> | null
@@ -5016,6 +5089,7 @@ export namespace Prisma {
 
   export type StreamCreateWithoutCardInput = {
     id?: string
+    type: TypeStream
     amount?: number | null
     amountBefore?: number | null
     amountAfter?: number | null
@@ -5025,6 +5099,7 @@ export namespace Prisma {
 
   export type StreamUncheckedCreateWithoutCardInput = {
     id?: string
+    type: TypeStream
     amount?: number | null
     amountBefore?: number | null
     amountAfter?: number | null
@@ -5084,6 +5159,7 @@ export namespace Prisma {
     OR?: Enumerable<StreamScalarWhereInput>
     NOT?: Enumerable<StreamScalarWhereInput>
     id?: StringFilter | string
+    type?: EnumTypeStreamFilter | TypeStream
     amount?: IntNullableFilter | number | null
     amountBefore?: IntNullableFilter | number | null
     amountAfter?: IntNullableFilter | number | null
@@ -5224,6 +5300,7 @@ export namespace Prisma {
 
   export type StreamCreateManyCardInput = {
     id?: string
+    type: TypeStream
     amount?: number | null
     amountBefore?: number | null
     amountAfter?: number | null
@@ -5233,6 +5310,7 @@ export namespace Prisma {
 
   export type StreamUpdateWithoutCardInput = {
     id?: StringFieldUpdateOperationsInput | string
+    type?: EnumTypeStreamFieldUpdateOperationsInput | TypeStream
     amount?: NullableIntFieldUpdateOperationsInput | number | null
     amountBefore?: NullableIntFieldUpdateOperationsInput | number | null
     amountAfter?: NullableIntFieldUpdateOperationsInput | number | null
@@ -5242,6 +5320,7 @@ export namespace Prisma {
 
   export type StreamUncheckedUpdateWithoutCardInput = {
     id?: StringFieldUpdateOperationsInput | string
+    type?: EnumTypeStreamFieldUpdateOperationsInput | TypeStream
     amount?: NullableIntFieldUpdateOperationsInput | number | null
     amountBefore?: NullableIntFieldUpdateOperationsInput | number | null
     amountAfter?: NullableIntFieldUpdateOperationsInput | number | null
@@ -5251,6 +5330,7 @@ export namespace Prisma {
 
   export type StreamUncheckedUpdateManyWithoutLogsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    type?: EnumTypeStreamFieldUpdateOperationsInput | TypeStream
     amount?: NullableIntFieldUpdateOperationsInput | number | null
     amountBefore?: NullableIntFieldUpdateOperationsInput | number | null
     amountAfter?: NullableIntFieldUpdateOperationsInput | number | null

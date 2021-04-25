@@ -98,6 +98,7 @@ exports.Prisma.OwnerScalarFieldEnum = makeEnum({
 
 exports.Prisma.StreamScalarFieldEnum = makeEnum({
   id: 'id',
+  type: 'type',
   amount: 'amount',
   amountBefore: 'amountBefore',
   amountAfter: 'amountAfter',
@@ -115,7 +116,10 @@ exports.Prisma.QueryMode = makeEnum({
   default: 'default',
   insensitive: 'insensitive'
 });
-
+exports.TypeStream = makeEnum({
+  DISCOUNT: 'DISCOUNT',
+  ADD: 'ADD'
+});
 
 exports.Prisma.ModelName = makeEnum({
   Card: 'Card',

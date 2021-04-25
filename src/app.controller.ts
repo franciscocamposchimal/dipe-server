@@ -18,7 +18,7 @@ export class AppController {
     return await this.prisma.card.findMany({
       include: { logs: true, owner: true },
       orderBy: {
-        id: 'asc'
+        createdAt: 'desc'
       }
     });
   }
@@ -141,18 +141,19 @@ export class AppController {
     if (findCard.available == 0) throw new HttpException('No Content', HttpStatus.NO_CONTENT);
 
     if (findCard.available > 0 && findCard.available >= data.disp_up) {
-      const newLog = {
-        amount: data.disp_up,
-        amountBefore: findCard.available,
-        amountAfter: findCard.available - data.disp_up
-      };
 
       const cardUpdated = await this.prisma.card.update({
         where: { id: findCard.id },
         data: {
           available: findCard.available - data.disp_up,
           logs: {
-            create: { ...newLog }
+            create: {
+              type: 'DISCOUNT',
+              amount: data.disp_up,
+              amountBefore: findCard.available,
+              amountAfter: findCard.available - data.disp_up
+
+            }
           }
         }
       });
@@ -168,7 +169,7 @@ export class AppController {
   }
 
   @Put('/api/owner/cards/:id')
-  async updateCardUser(
+  async updateOwnerCardUser(
     @Param('id') id: string,
     @Body() data: { name?: string; phone?: string; }
   ) {
@@ -194,6 +195,40 @@ export class AppController {
           }
         }
       }, include: { owner: true, logs: true }
+    });
+
+    return cardUpdated;
+  }
+
+  @Put('/api/reload/cards/:id')
+  async reloadCard(@Param('id') id: string, @Body() data: { packId: string; }) {
+    console.log('CARD UPDATE: ', id);
+   
+    const findCard = await this.prisma.card.findFirst({
+      where: { cardId: id },
+    });
+
+    const findPack = await this.prisma.refill.findUnique({
+      where: { id: data.packId }
+    });
+
+    if (!findCard || !findPack) throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+
+    const cardUpdated = await this.prisma.card.update({
+      where: { id: findCard.id },
+      data: {
+        pack: findPack.quantity,
+        available: findCard.available + findPack.equalsTo,
+        logs: {
+          create: {
+            type: 'ADD',
+            amount: findPack.equalsTo,
+            amountBefore: findCard.available,
+            amountAfter: findCard.available + findPack.equalsTo
+          }
+        }
+      },
+      include: { owner: true, logs: true }
     });
 
     return cardUpdated;
